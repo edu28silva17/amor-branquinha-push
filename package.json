@@ -1,0 +1,18 @@
+{
+  "name": "app-do-amor-branquinha-push",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "generate-keys": "node generate-keys.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.1",
+    "express": "^4.18.2",
+    "node-cron": "^3.0.2",
+    "web-push": "^3.6.6"
+  }
+}

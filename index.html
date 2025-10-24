@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>App do Amor da Branquinha 💖</title>
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="theme-color" content="#ffb6c1" />
+  <link rel="icon" href="/icons/icon-192.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root{ --bg1:#ffe6f0; --bg2:#fff0f6; --accent:#ff2476; --card:#ffffffee; }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:'Poppins',sans-serif;background:linear-gradient(135deg,var(--bg1),var(--bg2));min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;color:#221;}
+    .app{width:100%;max-width:920px;background:linear-gradient(180deg,rgba(255,255,255,.96),rgba(255,255,255,.9));border-radius:20px;box-shadow:0 14px 44px rgba(0,0,0,.12);padding:26px;position:relative;overflow:hidden;}
+    header{display:flex;align-items:center;gap:14px}
+    .logo{width:72px;height:72px;border-radius:16px;background:linear-gradient(135deg,var(--accent),#ff7bbf);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:30px;box-shadow:0 10px 24px rgba(255,36,118,.25)}
+    h1{margin:0;color:#ff2476}
+    p.lead{margin:6px 0 0;color:#5b5b5b;font-size:.98rem}
+    .grid{display:grid;grid-template-columns:1fr 360px;gap:18px;margin-top:18px}
+    .card{background:var(--card);border-radius:16px;padding:18px;min-height:320px}
+    .frase{font-size:1.25rem;font-weight:600;color:#222;margin:18px 0;text-align:center;min-height:84px;display:flex;align-items:center;justify-content:center;padding:12px;border-radius:12px;background:linear-gradient(90deg,#fff,#fff6fb);box-shadow:0 8px 18px rgba(0,0,0,.05)}
+    .actions{display:flex;gap:10px;justify-content:center;margin-top:12px;flex-wrap:wrap}
+    button.main{background:var(--accent);color:#fff;border:0;padding:12px 18px;border-radius:12px;font-weight:700;cursor:pointer;box-shadow:0 8px 18px rgba(255,36,118,.18)}
+    button.main:hover{transform:translateY(-2px)}
+    button.ghost{background:transparent;border:2px solid var(--accent);color:var(--accent);padding:10px 14px;border-radius:12px;cursor:pointer}
+    .tiny{font-size:.86rem;color:#555}
+    .toasts{position:fixed;right:18px;bottom:18px;display:flex;flex-direction:column;gap:10px;z-index:9999;max-width:340px}
+    .toast{background:linear-gradient(90deg,#fff,#fff5fb);padding:14px;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.09);min-width:260px;display:flex;gap:10px;align-items:center}
+    .toast .emoji{font-size:22px}.toast .body{font-size:.98rem;color:#333}.toast .time{font-size:.78rem;color:#888;margin-left:auto}
+    .hearts{position:absolute;inset:0;pointer-events:none;overflow:hidden;border-radius:20px}
+    .heart{position:absolute;font-size:20px;animation:floatUp linear forwards;opacity:0}
+    @keyframes floatUp{0%{transform:translateY(30px) scale(.8);opacity:0}10%{opacity:1}100%{transform:translateY(-160px) scale(1.2);opacity:0}}
+    .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .row > *{flex:1}
+    @media (max-width:880px){.grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="hearts" id="hearts"></div>
+    <header>
+      <div class="logo">💗</div>
+      <div>
+        <h1>App do Amor da Branquinha</h1>
+        <p class="lead">Mensagens carinhosas automáticas + notificações push + musiquinha 🎵</p>
+      </div>
+    </header>
+
+    <div class="grid">
+      <div class="card" aria-live="polite">
+        <div class="row" style="justify-content:space-between">
+          <div class="tiny">Bem-vinda, Branquinha ✨</div>
+          <div class="tiny">Status: <span id="statusAuto">Carregando...</span></div>
+        </div>
+
+        <div class="frase" id="frase">Clique em “Meu Amor do Dia” para um carinho 💌</div>
+
+        <div class="actions">
+          <button class="main" id="btnMeuAmor">Meu Amor do Dia 💖</button>
+          <button class="ghost" id="btnTest">Testar Agora</button>
+          <button class="ghost" id="btnPermissao">Permitir Notificações</button>
+          <button class="ghost" id="btnMusica">Ativar música 🎵</button>
+          <button class="ghost" id="btnInscrever">Inscrever Push</button>
+        </div>
+
+        <div class="tiny" style="text-align:center;margin-top:10px">
+          Para receber <strong>push mesmo com o app fechado</strong>, clique em <em>Permitir Notificações</em> e depois <em>Inscrever Push</em>. O servidor vai enviar as mensagens nos horários.
+        </div>
+      </div>
+
+      <div class="card">
+        <strong>Configurar Mensagens Automáticas</strong>
+        <div class="row" style="margin-top:8px">
+          <div><div class="tiny">Manhã</div><input type="time" id="timeMorning" value="08:00"></div>
+          <div><div class="tiny">Tarde</div><input type="time" id="timeAfternoon" value="14:00"></div>
+          <div><div class="tiny">Noite</div><input type="time" id="timeNight" value="20:00"></div>
+        </div>
+        <div class="actions" style="margin-top:10px">
+          <button id="btnSalvar" class="main">Salvar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="toasts" id="toasts" aria-live="polite"></div>
+  </div>
+
+<script>
+const nome = "Branquinha";
+const frases = [
+  `Bom dia, ${nome}! 🌞 Que seu dia seja tão doce quanto seu sorriso.`,
+  `${nome}, você é o meu lugar favorito no mundo inteiro 💗`,
+  `Oi, ${nome}! Só passei pra lembrar que te amo muito 💘`,
+  `Com você, ${nome}, tudo faz mais sentido ✨`,
+  `${nome}, cada batida do meu coração fala seu nome ❤️`,
+  `Sua risada é a trilha sonora do meu dia, ${nome} 😊`,
+  `Se eu pudesse compilar a felicidade, o resultado seria você, ${nome}.`,
+  `A vida fica cor-de-rosa quando penso em você, ${nome} 🌸`,
+  `${nome}, você é meu bug favorito — porque não quero consertar 😄`,
+  `Só queria dizer: você é incrível, ${nome}! 💕`,
+  `Boa tarde, ${nome}! Que seu dia siga leve e lindo ☀️`,
+  `Você foi a melhor decisão da minha vida, ${nome}.`,
+  `Que sorte a minha ter você, ${nome} 🍀`,
+  `Eu te escolheria mil vezes, ${nome} 💞`,
+  `Nada é coincidência quando se trata de nós, ${nome}.`,
+  `Com saudade de você, ${nome}… sempre um pouquinho mais 💭`,
+  `Obrigada por existir, ${nome}. Você é meu universo ✨`,
+  `Boa noite, ${nome}! Que seus sonhos sejam doces como você 🌙`,
+  `Se amor tivesse versão 2.0, seria você, ${nome} — perfeito! 💻❤️`,
+  `Respira fundo, ${nome}. Eu tô aqui com você, sempre 🤍`
+];
+
+const el = {
+  frase: document.getElementById('frase'),
+  btnMeuAmor: document.getElementById('btnMeuAmor'),
+  btnTest: document.getElementById('btnTest'),
+  btnPermissao: document.getElementById('btnPermissao'),
+  btnMusica: document.getElementById('btnMusica'),
+  btnInscrever: document.getElementById('btnInscrever'),
+  timeMorning: document.getElementById('timeMorning'),
+  timeAfternoon: document.getElementById('timeAfternoon'),
+  timeNight: document.getElementById('timeNight'),
+  btnSalvar: document.getElementById('btnSalvar'),
+  toasts: document.getElementById('toasts'),
+  hearts: document.getElementById('hearts'),
+  statusAuto: document.getElementById('statusAuto')
+};
+
+function showToast(text){
+  const node = document.createElement('div');
+  node.className = 'toast';
+  node.innerHTML = '<div class="emoji">💌</div><div class="body">'+text+'</div><div class="time">'+(new Date()).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})+'</div>';
+  el.toasts.prepend(node);
+  setTimeout(()=>{ node.style.transition='opacity .4s, transform .4s'; node.style.opacity=0; node.style.transform='translateX(30px)'; setTimeout(()=> node.remove(), 450); }, 7000);
+}
+function randomFrase(){ return frases[Math.floor(Math.random()*frases.length)]; }
+function mostrarFraseUI(t){ el.frase.textContent = t; }
+
+// Request Notifications
+el.btnPermissao.addEventListener('click', async () => {
+  if (!('Notification' in window)){ alert('Navegador sem suporte a notificações.'); return; }
+  const p = await Notification.requestPermission();
+  if (p === 'granted') showToast('Notificações permitidas 💫'); else showToast('Sem permissão para notificações.');
+});
+
+// Push subscription helpers
+async function urlBase64ToUint8Array(base64String) {
+  const padding = '='.repeat((4 - base64String.length % 4) % 4);
+  const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+  const rawData = atob(base64);
+  const outputArray = new Uint8Array(rawData.length);
+  for (let i = 0; i < rawData.length; ++i) outputArray[i] = rawData.charCodeAt(i);
+  return outputArray;
+}
+
+async function subscribePush(){
+  if (!('serviceWorker' in navigator)) { showToast('SW não suportado.'); return; }
+  const reg = await navigator.serviceWorker.register('/service-worker.js');
+  const res = await fetch('/api/vapidPublicKey');
+  const { publicKey } = await res.json();
+  const sub = await reg.pushManager.subscribe({
+    userVisibleOnly: true,
+    applicationServerKey: await urlBase64ToUint8Array(publicKey)
+  });
+  await fetch('/api/register', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ subscription: sub })});
+  showToast('Inscrito para Push com sucesso!');
+}
+
+el.btnInscrever.addEventListener('click', subscribePush);
+
+// manual UI
+el.btnMeuAmor.addEventListener('click', ()=>{ const f = randomFrase(); mostrarFraseUI(f); showToast(f); if ('Notification' in window && Notification.permission==='granted'){ new Notification('Meu Amor do Dia 💖', { body: f }); } });
+el.btnTest.addEventListener('click', async ()=>{ await fetch('/api/send-test', { method:'POST' }); showToast('Push de teste solicitado 🚀'); });
+
+// Save schedule to server
+el.btnSalvar.addEventListener('click', async ()=>{
+  const body = { morning: el.timeMorning.value, afternoon: el.timeAfternoon.value, night: el.timeNight.value };
+  await fetch('/api/schedule', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) });
+  showToast('Horários salvos no servidor 💾');
+});
+
+// Hearts animation
+function spawnHearts(n=1){
+  for(let i=0;i<n;i++){
+    const h = document.createElement('div');
+    h.className='heart';
+    h.textContent = ['💖','💘','💕','❤️'][Math.floor(Math.random()*4)];
+    h.style.left = Math.random()*86 + '%';
+    h.style.bottom = Math.random()*6 + '%';
+    const dur = Math.random()*2 + 3;
+    h.style.animationDuration = dur + 's';
+    h.style.fontSize = (12 + Math.random()*28) + 'px';
+    h.style.opacity = 0;
+    document.getElementById('hearts').appendChild(h);
+    setTimeout(()=> h.remove(), (dur*1000)+220);
+  }
+}
+setInterval(()=> spawnHearts(1 + Math.round(Math.random()*2)), 1200);
+
+// Register SW early
+if ('serviceWorker' in navigator){ navigator.serviceWorker.register('/service-worker.js'); }
+</script>
+</body>
+</html>
